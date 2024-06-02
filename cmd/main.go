@@ -2,6 +2,7 @@ package main
 
 import (
 	"disburse-app/internal/config"
+	dbSqlite "disburse-app/internal/repo/db/module"
 	"errors"
 	"fmt"
 	"log"
@@ -21,6 +22,13 @@ func main() {
 
 	conf, err := config.New(appName)
 	if err != nil {
+		log.Printf("failed to load config: %v\n", err)
+		return
+	}
+
+	_, err = dbSqlite.New(conf.Database)
+	if err != nil {
+		log.Printf("failed to load db: %v\n", err)
 		return
 	}
 

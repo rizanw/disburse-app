@@ -28,7 +28,7 @@ func (u *usecase) Disburse(userID int64, amount float64) (mWallet.Wallet, error)
 
 	// validate balance funds
 	if balance < amount {
-		return wallet, errors.New("insufficient funds")
+		return wallet, errors.New(mWallet.ErrorInsufficient)
 	}
 
 	// update new balance

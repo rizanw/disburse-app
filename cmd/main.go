@@ -3,6 +3,7 @@ package main
 import (
 	"disburse-app/internal/config"
 	dbSqlite "disburse-app/internal/repo/db/module"
+	ucWallet "disburse-app/internal/usecase/wallet/module"
 	"errors"
 	"fmt"
 	"log"
@@ -20,17 +21,22 @@ func main() {
 		address string
 	)
 
+	// init config
 	conf, err := config.New(appName)
 	if err != nil {
 		log.Printf("failed to load config: %v\n", err)
 		return
 	}
 
-	_, err = dbSqlite.New(conf.Database)
+	// init repo
+	rdb, dbconn, err := dbSqlite.New(conf.Database)
 	if err != nil {
 		log.Printf("failed to load db: %v\n", err)
 		return
 	}
+
+	// init usecase logic
+	_ = ucWallet.New(dbconn, rdb)
 
 	address = fmt.Sprintf("%s:%d", conf.Server.Host, conf.Server.Port)
 	srv := http.Server{

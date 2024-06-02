@@ -13,19 +13,19 @@ type sqlite struct {
 	db *sql.DB
 }
 
-func New(conf config.SqliteConfig) (rDB.DB, error) {
+func New(conf config.SqliteConfig) (rDB.DB, *sql.DB, error) {
 	db, err := sql.Open("sqlite3", conf.Path)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	if err = initDB(db); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	return &sqlite{
 		db: db,
-	}, nil
+	}, db, nil
 }
 
 func initDB(db *sql.DB) error {

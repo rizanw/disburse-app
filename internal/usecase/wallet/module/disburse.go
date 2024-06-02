@@ -36,6 +36,7 @@ func (u *usecase) Disburse(userID int64, amount float64) (mWallet.Wallet, error)
 	if err = u.rDB.UpdateBalanceUser(tx, userID, newBalance); err != nil {
 		return wallet, err
 	}
+	wallet.Balance = newBalance
 
 	// commit db tx
 	if err = tx.Commit(); err != nil {

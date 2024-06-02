@@ -36,14 +36,17 @@ func main() {
 	}
 
 	// init usecase logic
-	_ = ucWallet.New(dbconn, rdb)
+	ucWallet := ucWallet.New(dbconn, rdb)
+
+	// init handler route
+	handler := newRoute(ucWallet)
 
 	address = fmt.Sprintf("%s:%d", conf.Server.Host, conf.Server.Port)
 	srv := http.Server{
 		Addr:         address,
 		ReadTimeout:  time.Duration(conf.Server.ReadTimeout) * time.Second,
 		WriteTimeout: time.Duration(conf.Server.WriteTimeout) * time.Second,
-		Handler:      nil,
+		Handler:      handler,
 	}
 
 	log.Println("!app starting on ", address)

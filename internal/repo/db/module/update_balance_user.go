@@ -1,9 +1,11 @@
 package module
 
-import "database/sql"
+import (
+	"database/sql"
+)
 
 func (s *sqlite) UpdateBalanceUser(tx *sql.Tx, id int64, newBalance float64) error {
-	if _, err := tx.Exec(qUpdateBalanceUser, id, newBalance); err != nil {
+	if _, err := tx.Exec(qUpdateBalanceUser, newBalance, id); err != nil {
 		return err
 	}
 

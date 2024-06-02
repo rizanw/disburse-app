@@ -1,0 +1,8 @@
+server:
+  host: localhost
+  port: 3000
+  write_timeout: 10
+  read_timeout: 10
+
+database:
+  path: files/db/database.db
